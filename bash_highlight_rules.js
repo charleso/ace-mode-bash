@@ -11,7 +11,7 @@ var bashHighlightRules = function() {
     );
 
     var keywords = lang.arrayToMap(
-        ("declare|export|local|read|readonly|typeset|unset|if|elif|else|for|function|in|select|set|then|until|while").split("|")
+        ("case|esac|declare|do|done|export|local|read|readonly|typeset|unset|if|elif|else|fi|for|function|in|select|set|then|until|while").split("|")
     );
 
     var buildinConstants = lang.arrayToMap(
