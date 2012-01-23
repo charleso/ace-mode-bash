@@ -1,7 +1,7 @@
-define(function(require, exports, module) {
+ace.define('ace/mode/bash_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules', ], function(require, exports, module) {
 
-var oop = require("pilot/oop");
-var lang = require("pilot/lang");
+var oop = require("../lib/oop");
+var lang = require("../lib/lang");
 var TextHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
 
 var bashHighlightRules = function() {

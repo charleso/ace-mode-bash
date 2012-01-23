@@ -1,6 +1,7 @@
-define(function(require, exports, module) {
 
-var oop = require("pilot/oop");
+ace.define('ace/mode/bash', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/matching_brace_outdent', 'ace/mode/bash_highlight_rules', 'ace/range', ], function(require, exports, module) {
+
+var oop = require("../lib/oop");
 var TextMode = require("ace/mode/text").Mode;
 var Tokenizer = require("ace/tokenizer").Tokenizer;
 var bashHighlightRules = require("ace/mode/bash_highlight_rules").bashHighlightRules;
@@ -76,4 +77,50 @@ oop.inherits(Mode, TextMode);
 }).call(Mode.prototype);
 
 exports.Mode = Mode;
+
+});
+
+ace.define('ace/mode/matching_brace_outdent', ['require', 'exports', 'module' , 'ace/range'], function(require, exports, module) {
+"use strict";
+
+var Range = require("../range").Range;
+
+var MatchingBraceOutdent = function() {};
+
+(function() {
+
+    this.checkOutdent = function(line, input) {
+        if (! /^\s+$/.test(line))
+            return false;
+
+        return /^\s*\}/.test(input);
+    };
+
+    this.autoOutdent = function(doc, row) {
+        var line = doc.getLine(row);
+        var match = line.match(/^(\s*\})/);
+
+        if (!match) return 0;
+
+        var column = match[1].length;
+        var openBracePos = doc.findMatchingBracket({row: row, column: column});
+
+        if (!openBracePos || openBracePos.row == row) return 0;
+
+        var indent = this.$getIndent(doc.getLine(openBracePos.row));
+        doc.replace(new Range(row, 0, row, column-1), indent);
+    };
+
+    this.$getIndent = function(line) {
+        var match = line.match(/^(\s+)/);
+        if (match) {
+            return match[1];
+        }
+
+        return "";
+    };
+
+}).call(MatchingBraceOutdent.prototype);
+
+exports.MatchingBraceOutdent = MatchingBraceOutdent;
 });
